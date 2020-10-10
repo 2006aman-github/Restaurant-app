@@ -5,17 +5,19 @@ import Card from "./Card";
 
 function Menu() {
   const [foodItems, setFoodItems] = useState([]);
+
   useEffect(() => {
     fetch("http://localhost:9000/foodItems/sync", {
       method: "get",
     })
       .then((res) => res.json())
-      .then((data) => setFoodItems(data))
+      .then((data) => {
+        setFoodItems(data);
+      })
       .catch((err) => alert(err.message));
   }, []);
   return (
     <div className="menu__page">
-      <NavBar />
       <div className="menu__page__banner">
         <div className="menu__page__banner__left">
           <h1>FOODIES</h1>
@@ -59,6 +61,7 @@ function Menu() {
               itemName={foodItem.name}
               isVeg={foodItem.isVeg}
               price={foodItem.price}
+              isCartItem={false}
             />
           ))}
         </div>

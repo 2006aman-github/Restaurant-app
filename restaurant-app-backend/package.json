@@ -11,8 +11,11 @@
   "author": "Aman Chaubey",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongoose": "^5.10.8"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.8",
+    "pusher": "^3.0.1"
   }
 }

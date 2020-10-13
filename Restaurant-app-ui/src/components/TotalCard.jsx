@@ -12,22 +12,39 @@ import {
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { useStateValue } from "../StateProvider";
-import axios from '../axios'
+import axios from "../axios";
 
 function TotalCard({ cardHeader, cardContent, isFinalCard }) {
   let extra_charge = 30;
-  const [{ cart, total, user, checkedOut }, dispatch] = useStateValue();
+  const [
+    { cart, total, user, checkedOut, tax_and_charges },
+    dispatch,
+  ] = useStateValue();
   // const [checkedOut, setcheckedOut] = useState(false);
-  const placeOrder = () => {
-    axios.post('/user/orders/new', {
+
+  const orderBody = {
+    location: checkedOut.location,
+    contact: checkedOut.contact,
+    totalAmount: checkedOut.total,
+    items: cart,
+    status: checkedOut.orderStatus,
+    tax_and_charges: tax_and_charges,
+  };
+  // console.log(checkedOut.total);
+
+  const placeOrder = async () => {
+    await fetch("http://localhost:9000/user/orders/new/", {
+      method: "POST",
+      body: JSON.stringify(orderBody),
       headers: {
+        "Content-Type": "application/json",
         "auth-token": localStorage.getItem("token"),
-        "Content-Type": "application/json"
       },
-      body: {
-        "location": 'll'
-      }
-    }).then()
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err.message));
+    // console.log(res.data.headers["auth-token"]);
   };
 
   return (
@@ -87,7 +104,7 @@ function TotalCard({ cardHeader, cardContent, isFinalCard }) {
             isFinalCard ? (
               <Button
                 onClick={placeOrder}
-                disabled={!checkedOut}
+                disabled={!checkedOut.checkOutStatus}
                 variant="contained"
                 color="primary"
               >

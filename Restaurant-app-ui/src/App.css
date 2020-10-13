@@ -391,3 +391,24 @@ a {
   flex: 0.4;
   padding: 25px 0;
 }
+
+/* oreder page css  */
+.orders {
+  width: 100%;
+  min-height: 100vh;
+}
+.orders h1 {
+  padding: 20px;
+}
+.orders__list {
+  padding: 25px;
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+  /* justify-content: center; */
+  flex-wrap: wrap;
+}
+.order__card {
+  margin: 20px;
+  background-color: rgb(243, 243, 243) !important;
+}

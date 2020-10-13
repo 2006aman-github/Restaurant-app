@@ -19,7 +19,9 @@ function NavBar() {
         <Link to="/menu">
           <li>MENU</li>
         </Link>
-        <li>ORDERS</li>
+        <Link to="/orders">
+          <li>ORDERS</li>
+        </Link>
         <Link to="/cart">
           <li>CART</li>
         </Link>

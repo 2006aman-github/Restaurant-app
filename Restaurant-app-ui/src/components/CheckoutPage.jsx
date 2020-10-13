@@ -18,7 +18,10 @@ const AdressSchema = {
 
 function CheckoutPage() {
   const history = useHistory();
-  const [{ user, cart, checkedOut }, dispatch] = useStateValue();
+  const [
+    { user, cart, checkedOut, total, tax_and_charges },
+    dispatch,
+  ] = useStateValue();
   const [flatName, setflatName] = useState("");
   const [HNo, setHNo] = useState("");
   const [locality, setlocality] = useState("");
@@ -40,7 +43,7 @@ function CheckoutPage() {
     zip: zip,
     contact: contact,
   };
-  let fields = [flatName, HNo, locality, zip, contact];
+  // let fields = [flatName, HNo, locality, zip, contact];
 
   // validating the adress
   const validate = (e) => {
@@ -67,6 +70,12 @@ function CheckoutPage() {
     } else {
       dispatch({
         type: "CHECK_OUT",
+        checkOutStatus: true,
+        location: `${HNo}, ${flatName}, ${locality}, ZIP ${zip}`,
+        cart: cart,
+        total: parseInt(total) + parseInt(tax_and_charges),
+        contact: contact,
+        orderStatus: "Delivered",
       });
       setflatNameError(false);
       setHNoError(false);
@@ -75,6 +84,7 @@ function CheckoutPage() {
       setcontactError(false);
     }
   };
+  console.log(checkedOut);
 
   return (
     <>
@@ -143,7 +153,7 @@ function CheckoutPage() {
               label="Contact Number"
             ></TextField>
             <Button
-              disabled={checkedOut}
+              disabled={checkedOut.checkOutStatus}
               onClick={validate}
               variant="contained"
               color="secondary"

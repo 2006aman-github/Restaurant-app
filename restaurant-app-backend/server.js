@@ -136,12 +136,12 @@ app.get("/users/sync", (req, res) => {
 app.get("/user/orders/sync", verify, async (req, res) => {
   let decoded_data = jwt.decode(req.header("auth-token"));
   const theUserOrders = await Orders.find({user_id: decoded_data._id})
-  res.status(202).send(theUserOrders)
+  res.status(202).json(theUserOrders)
 });
 
 app.post('/user/orders/new',verify, async(req, res) => {
   const dbOrder = req.body
-  let decoded_data = jwt.decode(req.header("auth-token"));
+  let decoded_data = await jwt.decode(req.header("auth-token"));
   dbOrder["user_id"]= decoded_data._id
   // placing a new order 
   Orders.create(dbOrder, (err, data) => {

@@ -9,6 +9,7 @@ import Cart from "./components/Cart";
 import { useStateValue } from "./StateProvider";
 import axios from "./axios";
 import CheckoutPage from "./components/CheckoutPage";
+import Orders from "./components/Orders";
 
 // d2ea6f5fcd3ca442e5eddf1429511d5d
 function App() {
@@ -50,7 +51,7 @@ function App() {
             <Home />
           </Route>
           <Route exact path="/menu">
-            <NavBar />
+            
             <Menu />
           </Route>
           <Route exact path="/login">
@@ -64,6 +65,9 @@ function App() {
           </Route>
           <Route path="/checkout">
             <CheckoutPage />
+          </Route>
+          <Route path="/orders">
+            <Orders />
           </Route>
         </Switch>
       </Router>

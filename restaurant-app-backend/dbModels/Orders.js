@@ -15,11 +15,12 @@ const OrdersSchema = new mongoose.Schema({
         minlength: 10,
         maxlength: 10
     },
-    price:  {
+    totalAmount:  {
         type: String,
         required: true,
         max: 6
     },
+    tax_and_charges: Number,
     items: {
         type: [],
         required: true,

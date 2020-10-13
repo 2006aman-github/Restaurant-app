@@ -18,6 +18,7 @@ function Menu() {
   }, []);
   return (
     <div className="menu__page">
+      <NavBar />
       <div className="menu__page__banner">
         <div className="menu__page__banner__left">
           <h1>FOODIES</h1>
@@ -26,7 +27,7 @@ function Menu() {
               Fast Food, Beverages, Ice Creames, Meals and Many more....
             </span>
             <span>Costs Rs250.00 for one</span>
-            <span>Minimum Order of Rs100.00</span>
+            <span>Minimum Order of Rs60.00</span>
             <br />
             <span>
               Adress: Street 23, Opp of Kangana University, Gandhinagar,

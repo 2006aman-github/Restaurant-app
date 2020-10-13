@@ -3,7 +3,8 @@ export const initialState = {
   cart: [],
   total: 0,
   user: null,
-  checkedOut: false,
+  checkedOut: { checkOutStatus: false },
+  tax_and_charges: 30,
 };
 
 const reducer = (state, action) => {
@@ -41,7 +42,14 @@ const reducer = (state, action) => {
       };
 
     case "CHECK_OUT":
-      state.checkedOut = true;
+      state.checkedOut = {
+        checkOutStatus: action.checkOutStatus,
+        location: action.location,
+        cart: action.cart,
+        total: action.total,
+        contact: action.contact,
+        orderStatus: action.orderStatus,
+      };
       return {
         ...state,
         checkedOut: state.checkedOut,

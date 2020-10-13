@@ -23,7 +23,11 @@ function Cart() {
             />
           ))}
         </div>
-        <TotalCard />
+        <TotalCard
+          cardHeader="Total Amount"
+          orderContent={"Sandwich: Rs.30"}
+          isFinalCard={false}
+        />
       </div>
     </div>
   );

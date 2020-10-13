@@ -1,6 +1,9 @@
+import axios from "./axios";
 export const initialState = {
   cart: [],
   total: 0,
+  user: null,
+  checkedOut: false,
 };
 
 const reducer = (state, action) => {
@@ -30,6 +33,20 @@ const reducer = (state, action) => {
         cart: new_cart,
         total: state.total,
       };
+    case "ADD_USER":
+      state.user = action.user;
+      return {
+        ...state,
+        user: state.user,
+      };
+
+    case "CHECK_OUT":
+      state.checkedOut = true;
+      return {
+        ...state,
+        checkedOut: state.checkedOut,
+      };
+
     default:
       return state;
   }

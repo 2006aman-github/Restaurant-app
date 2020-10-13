@@ -60,7 +60,7 @@ function Menu() {
               itemImage={foodItem.imageUrl}
               itemName={foodItem.name}
               isVeg={foodItem.isVeg}
-              price={foodItem.price}
+              price={parseFloat(foodItem.price)}
               isCartItem={false}
             />
           ))}

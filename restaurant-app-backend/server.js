@@ -7,6 +7,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { auth as verify } from "./verifyToken.js";
 import Pusher from "pusher";
+import dotenv from "dotenv";
+import Orders from './dbModels/Orders.js'
+dotenv.config();
 
 const pusher = new Pusher({
   appId: "1087617",
@@ -90,7 +93,7 @@ app.post("/users/new", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   req.body.password = await bcrypt.hash(req.body.password, salt);
 
-  if (EmailExists) return res.status(401).send("Email Already Exists");
+  if (EmailExists) return res.status(401).json({"message": "Email Already Exists"});
 
   // create a new user
   Users.create(dbUser, (err, data) => {
@@ -105,17 +108,17 @@ app.post("/users/new", async (req, res) => {
 app.post("/login", async (req, res) => {
   // check if the user exists using the email
   const user = await Users.findOne({ email: req.body.email });
-  if (!user) return res.status(400).send("Email or Password is incorrect");
+  if (!user)
+    return res.status(400).json({ message: "Email or Password is incorrect" });
 
   // check if password is correct
   const ValidPass = await bcrypt.compare(req.body.password, user.password);
-  if (!ValidPass) return res.status(400).send("Email or Password is incorrect");
+  if (!ValidPass)
+    return res.status(400).json({ message: "Email or Password is incorrect" });
 
   // create a json web token
-  const token = jwt.sign({ _id: user._id }, "mdskddgfebedfsddfsd");
-  res.header("auth-token", token).send(token);
-
-  // res.status(200).send("Congrats!!!! logged In.....");
+  const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+  res.header("auth-token", token).json({ message: token });
 });
 
 // getting the users list
@@ -129,12 +132,36 @@ app.get("/users/sync", (req, res) => {
   });
 });
 
-app.get("/user/orders", verify, (req, res) => {
-  res.json({
-    orders: {
-      items: "Chicken Biryani",
-      description: "this is a test desc",
-    },
+// getting users orders 
+app.get("/user/orders/sync", verify, async (req, res) => {
+  let decoded_data = jwt.decode(req.header("auth-token"));
+  const theUserOrders = await Orders.find({user_id: decoded_data._id})
+  res.status(202).send(theUserOrders)
+});
+
+app.post('/user/orders/new',verify, async(req, res) => {
+  const dbOrder = req.body
+  let decoded_data = jwt.decode(req.header("auth-token"));
+  dbOrder["user_id"]= decoded_data._id
+  // placing a new order 
+  Orders.create(dbOrder, (err, data) => {
+    if (err) {
+      res.status(500).send(err)
+    } else {
+      res.status(200).send(data)
+    }
+  })
+})
+
+
+
+// route for verify user
+app.get("/user/verify", verify, async (req, res) => {
+  let decoded_data = jwt.decode(req.header("auth-token"));
+  const theUser = await Users.findById(decoded_data._id);
+  res.status(200).json({
+    verified: true,
+    user: { name: theUser.name, _id: theUser._id },
   });
 });
 

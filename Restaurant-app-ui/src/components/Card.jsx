@@ -106,7 +106,8 @@ function Card({ itemImage, itemName, isVeg, price, isCartItem }) {
         autoHideDuration={2500}
         onClose={(e) => setOpenSnackBar(false)}
       >
-        <Alert severity="success" variant="filled">
+        
+        <Alert  severity="success" variant="filled">
           {" "}
           <span style={{ marginRight: "20px" }}>Item Added</span>{" "}
           <span style={{ marginRight: "10px" }}>

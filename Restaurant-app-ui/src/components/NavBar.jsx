@@ -19,9 +19,11 @@ function NavBar() {
         <Link to="/menu">
           <li>MENU</li>
         </Link>
-        <Link to="/orders">
-          <li>ORDERS</li>
-        </Link>
+        {user ? (
+          <Link to="/orders">
+            <li>ORDERS</li>
+          </Link>
+        ) : null}
         <Link to="/cart">
           <li>CART</li>
         </Link>

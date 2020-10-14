@@ -8,9 +8,14 @@ import {
   CardContent,
   Typography,
 } from "@material-ui/core";
+import { useStateValue } from "../StateProvider";
+import { useHistory } from "react-router-dom";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
+  const [{ user }, dispatch] = useStateValue();
+  const [orderItems, setOrderItems] = useState([]);
+  const history = useHistory();
   useEffect(() => {
     axios
       .get("/user/orders/sync", {
@@ -21,7 +26,13 @@ function Orders() {
       .then((res) => res)
       .then((data) => setOrders(data.data))
       .catch((err) => console.log(err.message));
+
+    // checking for user existance
+    if (!user) {
+      history.replace("/menu");
+    }
   }, []);
+
 
   return (
     <div className="orders">
@@ -41,7 +52,7 @@ function Orders() {
               </Typography>
               <Typography gutterBottom>
                 <h4>TOTAL AMOUNT</h4>
-                {/* <br /> */}
+                
                 <Typography color="textSecondary">
                   Rs.{order.totalAmount}
                 </Typography>

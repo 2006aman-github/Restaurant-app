@@ -7,8 +7,8 @@ function Menu() {
   const [foodItems, setFoodItems] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:9000/foodItems/sync", {
-      method: "get",
+    fetch("https://mern-restaurant-app.herokuapp.com/foodItems/sync", {
+      method: "GET",
     })
       .then((res) => res.json())
       .then((data) => {

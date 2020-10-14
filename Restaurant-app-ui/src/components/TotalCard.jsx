@@ -9,13 +9,13 @@ import {
   Select,
   Typography,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import React, { useState } from "react";
 import { useStateValue } from "../StateProvider";
 import axios from "../axios";
 
 function TotalCard({ cardHeader, cardContent, isFinalCard }) {
-  let extra_charge = 30;
+  const history = useHistory();
   const [
     { cart, total, user, checkedOut, tax_and_charges },
     dispatch,
@@ -33,7 +33,7 @@ function TotalCard({ cardHeader, cardContent, isFinalCard }) {
   // console.log(checkedOut.total);
 
   const placeOrder = async () => {
-    await fetch("http://localhost:9000/user/orders/new/", {
+    await fetch("https://mern-restaurant-app.herokuapp.com/user/orders/new/", {
       method: "POST",
       body: JSON.stringify(orderBody),
       headers: {
@@ -42,7 +42,9 @@ function TotalCard({ cardHeader, cardContent, isFinalCard }) {
       },
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        history.replace("/orders");
+      })
       .catch((err) => console.log(err.message));
     // console.log(res.data.headers["auth-token"]);
   };
@@ -82,7 +84,7 @@ function TotalCard({ cardHeader, cardContent, isFinalCard }) {
               <br />
               <br />
               <Typography color="textSecondary">
-                Taxes & Charges: Rs.{30}
+                Taxes & Charges: Rs.{tax_and_charges}
               </Typography>
               <br />
               <br />
@@ -90,7 +92,7 @@ function TotalCard({ cardHeader, cardContent, isFinalCard }) {
           )}
           <hr />
           <Typography variant="h5" component="h2">
-            Grand Total: Rs.{total + extra_charge}
+            Grand Total: Rs.{total + tax_and_charges}
           </Typography>
         </CardContent>
         <CardActions style={{ width: "100%" }}>

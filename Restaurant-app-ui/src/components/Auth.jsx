@@ -49,7 +49,7 @@ function Auth({ isLogin }) {
         setPasswordError((e) => validation.error?.details[0].message);
       }
     } else {
-      await fetch("http://localhost:9000/login", {
+      await fetch("https://mern-restaurant-app.herokuapp.com/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

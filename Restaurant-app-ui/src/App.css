@@ -410,5 +410,8 @@ a {
 }
 .order__card {
   margin: 20px;
-  background-color: rgb(243, 243, 243) !important;
+  background-color: rgb(250, 250, 250) !important;
+  box-shadow: 1px 1px 4px gray !important;
+  /* flex: 0.5; */
+  width: 370px;
 }

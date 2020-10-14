@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import NavBar from "./NavBar";
 import Card from "./Card";
+// import { CubeGrid } from "styled-loaders-react";
+import DotScale from "styled-loaders-react/lib/components/DotScale";
 
 function Menu() {
   const [foodItems, setFoodItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("https://mern-restaurant-app.herokuapp.com/foodItems/sync", {
@@ -13,6 +16,9 @@ function Menu() {
       .then((res) => res.json())
       .then((data) => {
         setFoodItems(data);
+        setTimeout(() => {
+          setLoading(false);
+        }, 700);
       })
       .catch((err) => alert(err.message));
   }, []);
@@ -55,17 +61,21 @@ function Menu() {
             <i className="fa fa-search"></i>
           </div>
         </div>
-        <div className="cuisines__list">
-          {foodItems.map((foodItem) => (
-            <Card
-              itemImage={foodItem.imageUrl}
-              itemName={foodItem.name}
-              isVeg={foodItem.isVeg}
-              price={parseFloat(foodItem.price)}
-              isCartItem={false}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <DotScale />
+        ) : (
+          <div className="cuisines__list">
+            {foodItems.map((foodItem) => (
+              <Card
+                itemImage={foodItem.imageUrl}
+                itemName={foodItem.name}
+                isVeg={foodItem.isVeg}
+                price={parseFloat(foodItem.price)}
+                isCartItem={false}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

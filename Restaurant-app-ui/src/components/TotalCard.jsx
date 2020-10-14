@@ -16,11 +16,11 @@ import axios from "../axios";
 
 function TotalCard({ cardHeader, cardContent, isFinalCard }) {
   const history = useHistory();
+  const [placingOrder, setplacingOrder] = useState(false);
   const [
     { cart, total, user, checkedOut, tax_and_charges },
     dispatch,
   ] = useStateValue();
-  // const [checkedOut, setcheckedOut] = useState(false);
 
   const orderBody = {
     location: checkedOut.location,
@@ -33,6 +33,7 @@ function TotalCard({ cardHeader, cardContent, isFinalCard }) {
   // console.log(checkedOut.total);
 
   const placeOrder = async () => {
+    // setplacingOrder(true);
     await fetch("https://mern-restaurant-app.herokuapp.com/user/orders/new/", {
       method: "POST",
       body: JSON.stringify(orderBody),
@@ -43,6 +44,7 @@ function TotalCard({ cardHeader, cardContent, isFinalCard }) {
     })
       .then((res) => res.json())
       .then((data) => {
+        // setplacingOrder(false);
         history.replace("/orders");
       })
       .catch((err) => console.log(err.message));
@@ -105,12 +107,15 @@ function TotalCard({ cardHeader, cardContent, isFinalCard }) {
           ) : cart.length > 0 ? (
             isFinalCard ? (
               <Button
-                onClick={placeOrder}
+                onClick={(e) => {
+                  placeOrder();
+                  setplacingOrder(true);
+                }}
                 disabled={!checkedOut.checkOutStatus}
                 variant="contained"
                 color="primary"
               >
-                PLACE ORDER
+                {placingOrder ? "PLACING YOUR ORDER" : "PLACE ORDER"}
               </Button>
             ) : (
               <Link style={{ width: "100%" }} to="/checkout">
